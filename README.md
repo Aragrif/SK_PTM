@@ -1,6 +1,6 @@
 # SaintJohnRiver_PTM
 
-Data, code, and results of the Saint John River watershed Priority Threat Management analysis. 
+Archive of data, code, and results of the Saint John River watershed Priority Threat Management analysis, manuscript submitted 29 Mar 2020 to Conservation Science and Practice.
 
 ## code
 
