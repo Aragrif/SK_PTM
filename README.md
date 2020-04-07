@@ -2,15 +2,32 @@
 
 Archive of data, code, and results of the Saint John River watershed Priority Threat Management analysis, manuscript submitted 29 Mar 2020 to Conservation Science and Practice.
 
+## data
+
+Note that raw data files of expert estimates (/benefits/ExpXX.csv, where XX are expert ID numbers) and SpecialCases.csv were excluded from this archive to maintain expert confidentiality. Other derived data tables that show individual expert estimates were also excluded from this archive.
+
+### EcolGroupsList.csv
+* table with ecological groups (columns) with group names as headers, and the common names of species/communities included in the group (rows)
+
+### CostFeas.csv
+* summary table of (original) strategy names (S1-S22, where S22 is 'All Strategies'), total (discounted) costs over 25 years, and estimated feasibility
+
+### cost/SJR_CostFeasibility_Final.xlsx
+* raw data on estimated costs of each individual action within a strategy. All identifying information has been removed to maintain expert confidentiality.
+
+### SJRStrategyCombinations.csv
+* table of strategies (Baseline, S1-S23) and the individual strategies that are part of combination strategies (S17-S23) - used in complementarity analysis
+
 ## code
 
 ### manageData/combineTables.R 
-* reads individual expert estimate tables and combines them into single data/Estimates_combined.csv file
+* reads individual expert estimate tables and combines them into single Estimates_combined.csv file (not included in this archive)
 
 ### manageData/standardizeConfidence.R 
 * takes Estimates_combined.csv file and standardizes lower and upper estimates to 80% confidence level
-* saves outputs into 2 tables: data/Estimates_std_long.csv (tidy version) and Estimates_std_wide.csv (same table format as Results.csv)
-* also counts the number of expert estimates for each ecological group (data/Estimates_count_group.csv) and for each strategy-group combination (data/Estimates_count_strategy.csv), and saves a tidy version of Estimates_combined.csv (data/Estimates_tidy.csv)
+* saves outputs into 2 tables: Estimates_std_long.csv (tidy version) and Estimates_std_wide.csv (same table format as Estimates_combined.csv) (tables not included in this archive)
+* also counts the number of expert estimates for each ecological group (data/Estimates_count_group.csv) and for each strategy-group combination (data/Estimates_count_strategy.csv)
+* saves a tidy version of Estimates_combined.csv (Estimates_tidy.csv) (not included in this archive)
 
 ### manageData/createBoxplots.R 
 * uses Estimates_std_long.csv to create plots for expert review & feedback (plots not included in this archive)
