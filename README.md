@@ -9,11 +9,11 @@ Data, code, and results of the Saint John River watershed Priority Threat Manage
 
 ### manageData/standardizeConfidence.R 
 * takes Estimates_combined.csv file and standardizes lower and upper estimates to 80% confidence level
-* saves results into 2 tables: data/Estimates_std_long.csv (tidy version) and Estimates_std_wide.csv (same table format as Results.csv)
+* saves outputs into 2 tables: data/Estimates_std_long.csv (tidy version) and Estimates_std_wide.csv (same table format as Results.csv)
 * also counts the number of expert estimates for each ecological group (data/Estimates_count_group.csv) and for each strategy-group combination (data/Estimates_count_strategy.csv), and saves a tidy version of Estimates_combined.csv (data/Estimates_tidy.csv)
 
 ### manageData/createBoxplots.R 
-* uses Estimates_std_long.csv to create plots for expert review & feedback - *plots not included in this archive*
+* uses Estimates_std_long.csv to create plots for expert review & feedback (plots not included in this archive)
   + plot1 are boxplots of the best guess, lower, and upper estimates for each strategy, with separate plots for each ecological group
   + plot2 are pointrange plots of each individual expert estimate for each strategy, with separate plots for each ecological group
 
@@ -25,7 +25,7 @@ Data, code, and results of the Saint John River watershed Priority Threat Manage
   + calculate the average performance (probability of persistence) under each strategy = _Aggregated benefits + Aggregated baseline_ (data/Estimates_aggregated_performance.csv)
   
 ### getNewCombos.R
-* derives benefit estimates for new combination strategies S22 (All except S6) and S23 (All except S5) from original S22 ('All Strategies'), S5, and S6 estimates. Updates data tables from aggregateEstimates.R and saves as new files with(_ _rev_ appended to old filename.
+* derives benefit estimates for new combination strategies S22 (All except S6) and S23 (All except S5) from original S22 ('All Strategies'), S5, and S6 estimates. Updates data tables from aggregateEstimates.R and saves as new files with _ _rev_ appended to old filename.
 
 ### getBenefitMatrix.R
 * uses Estimates_aggregated_baseline.csv and Estimates_aggregated_benefits.csv, and a table of strategy Cost and Feasibility to
