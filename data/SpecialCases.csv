@@ -1,0 +1,191 @@
+Expert,Ecological Group,Strategy,NumSppScored
+1,Migratory Fish,Baseline,1
+1,Migratory Fish,1,1
+1,Migratory Fish,2,1
+1,Migratory Fish,3,1
+1,Migratory Fish,4,1
+1,Migratory Fish,5,1
+1,Migratory Fish,6,1
+1,Migratory Fish,7,1
+1,Migratory Fish,8,1
+1,Migratory Fish,9,1
+1,Migratory Fish,10,1
+1,Migratory Fish,11,1
+1,Migratory Fish,12,1
+1,Migratory Fish,13,1
+1,Migratory Fish,14,1
+1,Migratory Fish,15,1
+1,Migratory Fish,16,1
+1,Migratory Fish,17,1
+1,Migratory Fish,18,1
+1,Migratory Fish,19,1
+1,Migratory Fish,20,1
+1,Migratory Fish,21,1
+1,Migratory Fish,22,1
+5,"Grassland, Open, or Agricult Assoc",Baseline,1
+5,"Grassland, Open, or Agricult Assoc",1,1
+5,"Grassland, Open, or Agricult Assoc",2,1
+5,"Grassland, Open, or Agricult Assoc",3,1
+5,"Grassland, Open, or Agricult Assoc",4,1
+5,"Grassland, Open, or Agricult Assoc",5,1
+5,"Grassland, Open, or Agricult Assoc",6,1
+5,"Grassland, Open, or Agricult Assoc",7,1
+5,"Grassland, Open, or Agricult Assoc",8,1
+5,"Grassland, Open, or Agricult Assoc",9,1
+5,"Grassland, Open, or Agricult Assoc",10,1
+5,"Grassland, Open, or Agricult Assoc",11,1
+5,"Grassland, Open, or Agricult Assoc",12,1
+5,"Grassland, Open, or Agricult Assoc",13,1
+5,"Grassland, Open, or Agricult Assoc",14,1
+5,"Grassland, Open, or Agricult Assoc",15,1
+5,"Grassland, Open, or Agricult Assoc",16,1
+5,"Grassland, Open, or Agricult Assoc",17,1
+5,"Grassland, Open, or Agricult Assoc",18,1
+5,"Grassland, Open, or Agricult Assoc",19,1
+5,"Grassland, Open, or Agricult Assoc",20,1
+5,"Grassland, Open, or Agricult Assoc",21,1
+5,"Grassland, Open, or Agricult Assoc",22,1
+5,Wetland Species,Baseline,2
+5,Wetland Species,1,2
+5,Wetland Species,2,2
+5,Wetland Species,3,2
+5,Wetland Species,4,2
+5,Wetland Species,5,2
+5,Wetland Species,6,2
+5,Wetland Species,7,2
+5,Wetland Species,8,2
+5,Wetland Species,9,2
+5,Wetland Species,10,2
+5,Wetland Species,11,2
+5,Wetland Species,12,2
+5,Wetland Species,13,2
+5,Wetland Species,14,2
+5,Wetland Species,15,2
+5,Wetland Species,16,2
+5,Wetland Species,17,2
+5,Wetland Species,18,2
+5,Wetland Species,19,2
+5,Wetland Species,20,2
+5,Wetland Species,21,2
+5,Wetland Species,22,2
+9,"Grassland, Open, or Agricult Assoc",8,3
+9,Forest Openings and Young Forest Species,8,1
+9,"Grassland, Open, or Agricult Assoc",13,1
+15,"Grassland, Open, or Agricult Assoc",Baseline,1
+15,"Grassland, Open, or Agricult Assoc",16,1
+15,"Grassland, Open, or Agricult Assoc",22,1
+16,Riparian Species,Baseline,3
+16,Riparian Species,1,3
+16,Riparian Species,2,3
+16,Riparian Species,3,3
+16,Riparian Species,4,3
+16,Riparian Species,5,3
+16,Riparian Species,6,3
+16,Riparian Species,7,3
+16,Riparian Species,8,3
+16,Riparian Species,9,3
+16,Riparian Species,10,3
+16,Riparian Species,11,3
+16,Riparian Species,12,3
+16,Riparian Species,13,3
+16,Riparian Species,14,3
+16,Riparian Species,15,3
+16,Riparian Species,16,3
+16,Riparian Species,17,3
+16,Riparian Species,18,3
+16,Riparian Species,19,3
+16,Riparian Species,20,3
+16,Riparian Species,21,3
+16,Riparian Species,22,3
+16,"Grassland, Open, or Agricult Assoc",Baseline,3
+16,"Grassland, Open, or Agricult Assoc",1,3
+16,"Grassland, Open, or Agricult Assoc",2,3
+16,"Grassland, Open, or Agricult Assoc",3,3
+16,"Grassland, Open, or Agricult Assoc",4,3
+16,"Grassland, Open, or Agricult Assoc",5,3
+16,"Grassland, Open, or Agricult Assoc",6,3
+16,"Grassland, Open, or Agricult Assoc",7,3
+16,"Grassland, Open, or Agricult Assoc",8,3
+16,"Grassland, Open, or Agricult Assoc",9,3
+16,"Grassland, Open, or Agricult Assoc",10,3
+16,"Grassland, Open, or Agricult Assoc",11,3
+16,"Grassland, Open, or Agricult Assoc",12,3
+16,"Grassland, Open, or Agricult Assoc",13,3
+16,"Grassland, Open, or Agricult Assoc",14,3
+16,"Grassland, Open, or Agricult Assoc",15,3
+16,"Grassland, Open, or Agricult Assoc",16,3
+16,"Grassland, Open, or Agricult Assoc",17,3
+16,"Grassland, Open, or Agricult Assoc",18,3
+16,"Grassland, Open, or Agricult Assoc",19,3
+16,"Grassland, Open, or Agricult Assoc",20,3
+16,"Grassland, Open, or Agricult Assoc",21,3
+16,"Grassland, Open, or Agricult Assoc",22,3
+18,"Grassland, Open, or Agricult Assoc",Baseline,1
+18,"Grassland, Open, or Agricult Assoc",1,1
+18,"Grassland, Open, or Agricult Assoc",2,1
+18,"Grassland, Open, or Agricult Assoc",3,1
+18,"Grassland, Open, or Agricult Assoc",4,1
+18,"Grassland, Open, or Agricult Assoc",5,1
+18,"Grassland, Open, or Agricult Assoc",6,1
+18,"Grassland, Open, or Agricult Assoc",7,1
+18,"Grassland, Open, or Agricult Assoc",8,1
+18,"Grassland, Open, or Agricult Assoc",9,1
+18,"Grassland, Open, or Agricult Assoc",10,1
+18,"Grassland, Open, or Agricult Assoc",11,1
+18,"Grassland, Open, or Agricult Assoc",12,1
+18,"Grassland, Open, or Agricult Assoc",13,1
+18,"Grassland, Open, or Agricult Assoc",14,1
+18,"Grassland, Open, or Agricult Assoc",15,1
+18,"Grassland, Open, or Agricult Assoc",16,1
+18,"Grassland, Open, or Agricult Assoc",17,1
+18,"Grassland, Open, or Agricult Assoc",18,1
+18,"Grassland, Open, or Agricult Assoc",19,1
+18,"Grassland, Open, or Agricult Assoc",20,1
+18,"Grassland, Open, or Agricult Assoc",21,1
+18,"Grassland, Open, or Agricult Assoc",22,1
+18,Wetland Species,Baseline,2
+18,Wetland Species,1,2
+18,Wetland Species,2,2
+18,Wetland Species,3,2
+18,Wetland Species,4,2
+18,Wetland Species,5,2
+18,Wetland Species,6,2
+18,Wetland Species,7,2
+18,Wetland Species,8,2
+18,Wetland Species,9,2
+18,Wetland Species,10,2
+18,Wetland Species,11,2
+18,Wetland Species,12,2
+18,Wetland Species,13,2
+18,Wetland Species,14,2
+18,Wetland Species,15,2
+18,Wetland Species,16,2
+18,Wetland Species,17,2
+18,Wetland Species,18,2
+18,Wetland Species,19,2
+18,Wetland Species,20,2
+18,Wetland Species,21,2
+18,Wetland Species,22,2
+19,Riparian Species,Baseline,1
+19,Riparian Species,1,1
+19,Riparian Species,2,1
+19,Riparian Species,3,1
+19,Riparian Species,4,1
+19,Riparian Species,5,1
+19,Riparian Species,6,1
+19,Riparian Species,7,1
+19,Riparian Species,8,1
+19,Riparian Species,9,1
+19,Riparian Species,10,1
+19,Riparian Species,11,1
+19,Riparian Species,12,1
+19,Riparian Species,13,1
+19,Riparian Species,14,1
+19,Riparian Species,15,1
+19,Riparian Species,16,1
+19,Riparian Species,17,1
+19,Riparian Species,18,1
+19,Riparian Species,19,1
+19,Riparian Species,20,1
+19,Riparian Species,21,1
+19,Riparian Species,22,1
