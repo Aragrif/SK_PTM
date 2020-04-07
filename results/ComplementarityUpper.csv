@@ -1,0 +1,9 @@
+total_cost,strategies,species_groups,threshold,number_of_species,budget.max
+0,Baseline,Migratory.Fish | Riparian.Species | Aquatic.Species | Wetland.Species | Grassland..Open..or.Agricult.Assoc | Mature.Forest.and.Peatland.Species | Forest.Openings.and.Young.Forest.Species,50.01,7,0
+1022670.12,S11,Bats | Migratory.Fish | Riparian.Species | Aquatic.Species | Wetland.Species | Grassland..Open..or.Agricult.Assoc | Mature.Forest.and.Peatland.Species | Forest.Openings.and.Young.Forest.Species,50.01,8,1022670.12
+0,Baseline,Riparian.Species | Aquatic.Species | Wetland.Species | Grassland..Open..or.Agricult.Assoc | Mature.Forest.and.Peatland.Species | Forest.Openings.and.Young.Forest.Species,60.01,6,0
+1535127.07,S1,Migratory.Fish | Riparian.Species | Aquatic.Species | Wetland.Species | Grassland..Open..or.Agricult.Assoc | Mature.Forest.and.Peatland.Species | Forest.Openings.and.Young.Forest.Species,60.01,7,1535127.07
+0,Baseline,Wetland.Species | Mature.Forest.and.Peatland.Species,70.01,2,0
+1535127.07,S1,Riparian.Species | Aquatic.Species | Forest.Openings.and.Young.Forest.Species | Wetland.Species | Mature.Forest.and.Peatland.Species,70.01,5,1535127.07
+4796687.97,S1 + S10,Migratory.Fish | Riparian.Species | Aquatic.Species | Forest.Openings.and.Young.Forest.Species | Wetland.Species | Mature.Forest.and.Peatland.Species,70.01,6,6595151.4
+30795490.9,S1 + S3 + S10,Migratory.Fish | Riparian.Species | Aquatic.Species | Grassland..Open..or.Agricult.Assoc | Forest.Openings.and.Young.Forest.Species | Wetland.Species | Mature.Forest.and.Peatland.Species,70.01,7,32149415.98

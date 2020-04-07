@@ -1,0 +1,7 @@
+total_cost,strategies,species_groups,threshold,number_of_species,budget.max
+0,Baseline,Wetland.Species,40.01,1,0
+1535127.07,S1,Riparian.Species | Mature.Forest.and.Peatland.Species | Wetland.Species,40.01,3,1535127.07
+2945165.9,S2,Riparian.Species | Mature.Forest.and.Peatland.Species | Forest.Openings.and.Young.Forest.Species | Wetland.Species,40.01,4,2945165.9
+645490427.5999999,S23,Migratory.Fish | Riparian.Species | Aquatic.Species | Mature.Forest.and.Peatland.Species | Wetland.Species,40.01,5,645490427.5999999
+0,Baseline,,50.01,0,0
+283965459.6999999,S22,Wetland.Species,50.01,1,283965459.6999999
