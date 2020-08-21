@@ -20,11 +20,12 @@ Read in input tables (use results from *aggregateEstimates.R*) and save original
 ``` r
 subfolder <- here("data")
 grplist <- read_csv(paste0(subfolder, "/EcolGroupsList.csv")) # Table of species in each ecological group
-base.mat.agg <- read_csv(paste0(subfolder, "/Estimates_aggregated_baseline.csv"))
-ben.mat.agg <- read_csv(paste0(subfolder, "/Estimates_aggregated_benefits.csv"))
 costfeas <- read_csv(paste0(subfolder, "/CostFeas.csv")) 
-exp.pop <- read_csv(paste0(subfolder, "/Estimates_aggregated_performance.csv"))
-grpwtd_ben <- read_csv(paste0(subfolder, "/Estimates_aggregated_benefits_groupWtd.csv"))
+resultsfolder <- here("results")
+base.mat.agg <- read_csv(paste0(resultsfolder, "/Estimates_aggregated_baseline.csv"))
+ben.mat.agg <- read_csv(paste0(resultsfolder, "/Estimates_aggregated_benefits.csv"))
+exp.pop <- read_csv(paste0(resultsfolder, "/Estimates_aggregated_performance.csv"))
+grpwtd_ben <- read_csv(paste0(resultsfolder, "/Estimates_aggregated_benefits_groupWtd.csv"))
 ```
 
 Calculate new cost and feasibility
@@ -44,7 +45,7 @@ new.costfeas <- costfeas %>%
 new.costfeas$Cost[which(new.costfeas$Strategy == "S22")] <- S22.cost
 new.costfeas$Feasibility[which(new.costfeas$Strategy == "S22")] <- S22.feas
 
-# write_csv(new.costfeas, "./data/CostFeas_rev.csv")
+# write_csv(new.costfeas, "./results/CostFeas_rev.csv")
 ```
 
 Calculate new benefit estimates
@@ -75,7 +76,7 @@ new.ben.agg[,which(names(new.ben.agg)=="Wt.Lower_22")] <- S22.ben[,which(names(S
 new.ben.agg[,which(names(new.ben.agg)=="Wt.Upper_22")] <- S22.ben[,which(names(S22.ben)=="Wt.Upper_22")]
 
 # Save new table and use for *getBenefitMatrix.R*
-# write_csv(new.ben.agg, "./data/Estimates_aggregated_benefits_rev.csv") 
+# write_csv(new.ben.agg, "./results/Estimates_aggregated_benefits_rev.csv")
 ```
 
 Calculate performance with new benefit estimates
@@ -87,7 +88,7 @@ Unweighted performance
 agg.perf <- new.ben.agg[,2:ncol(new.ben.agg)] + as.matrix(base.mat.agg[,2:ncol(base.mat.agg)])
 agg.perf <- cbind(base.mat.agg, agg.perf)
 
-# write_csv(agg.perf, "./data/Estimates_aggregated_performance_rev.csv")
+# write_csv(agg.perf, "./results/Estimates_aggregated_performance_rev.csv")
 ```
 
 Performance weighted by number of species in group for calculating CE scores
@@ -98,5 +99,5 @@ grpwtd_ben <- new.ben.agg[,2:ncol(new.ben.agg)]*numspp
 grpwtd_ben <- cbind(new.ben.agg[,1], grpwtd_ben)
 names(grpwtd_ben)[1] <- "Ecological.Group"
 
-# write_csv(grpwtd_ben, "./data/Estimates_aggregated_benefits_groupwtd_rev.csv")
+# write_csv(grpwtd_ben, "./results/Estimates_aggregated_benefits_groupwtd_rev.csv")
 ```
