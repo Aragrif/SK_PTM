@@ -30,10 +30,10 @@ u <- 0.3 # prop. variation from the best estimate
 
 #' Read in group-weighted benefit values from *aggregateEstimates.R* and cost/feasibility table
 #+ warning = FALSE, message = FALSE
-datafolder <- here("data")
+# datafolder <- here("data")
 resultfolder <- here("results")
-ben.mat.agg <- read_csv(paste0(datafolder, "/Estimates_aggregated_benefits_groupwtd_rev.csv"))
-costfeas <- read_csv(paste0(datafolder, "/CostFeas_rev.csv"))
+ben.mat.agg <- read_csv(paste0(resultfolder, "/Estimates_aggregated_benefits_groupwtd_rev.csv"))
+costfeas <- read_csv(paste0(resultfolder, "/CostFeas_rev.csv"))
 costfeas <- costfeas[-1,] # Remove baseline values
 costfeas$Strategy <- as_factor(costfeas$Strategy)
 
@@ -87,9 +87,6 @@ if (uncrtn.anal == 1) {
   
   for (it in 1:MC) {
     
-    # rnd <- runif(1,1,999999)
-    # set.seed(rnd)
-    
     # sample cost values
     samples[,it] <- rpert(nrow(costfeas),
                           min = min.Cost,
@@ -124,9 +121,10 @@ if (uncrtn.anal == 1) {
   MC.Ranks <- data.frame(costfeas$Strategy, MC.Ranks)
   names(MC.Ranks)[1] <- "Strategy"
 
+  MC_Samples <- data.frame(costfeas$Strategy, samples)
+  
   # write_csv(MC.Results, "./results/Uncertainty_CEScores_cost.csv")
   # write_csv(MC.Ranks, "./results/Uncertainty_CERanks_cost.csv")
-  MC_Samples <- data.frame(costfeas$Strategy, samples)
   # write_csv(MC_Samples, "./results/Uncertainty_SampledData_cost.csv")
 
   # Boxplot of CE scores
