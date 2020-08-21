@@ -21,13 +21,13 @@ library(here)
 #' Prepare data for plotting
 #+ warning = FALSE, message = FALSE
 # Specify which file to read
-datafolder <- here("data")
+# datafolder <- here("data")
 resultfolder <- here("results")
 
 weighted <- 1
 
 if (weighted == 0) {
-  est.file <- paste0(datafolder, "/Estimates_aggregated_performance") # unweighted
+  est.file <- paste0(resultfolder, "/Estimates_aggregated_performance") # unweighted
 } else {
   if (weighted == 1) {
     est.file <- paste0(resultfolder, "/Expected_Performance") # feasibility weighted
