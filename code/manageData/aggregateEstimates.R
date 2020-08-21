@@ -1,33 +1,33 @@
-Aggregate Standardized Benefit Estimates
-================
-Adapted for the SJR PTM by Abbey Camaclang
-24 July 2019
-
-This code
-a) calculates benefits of each strategy (strategy performance - baseline performance) for each ecological group,
-b) aggregates (averages) across experts, and
-c) calculates expected performance under each strategy based on the aggregated benefit estimate.
-
-Based on first part of Step 2 section of 1\_Cost-Effectiveness.R code from FRE PTM project and uses **Estimates\_std\_wide.csv** from *standardizeConfidence.R*.
-
-If some of the expert estimates need to be weighted differently, must provide a table listing the species in each ecological group *EcolGroupsList.csv* and a table *SpecialCases.csv* indicating which expert estimates for which ecological groups and strategies require different weights, and the number of species scored for that estimate.
-
-``` r
+#' ---
+#' title: "Aggregate Standardized Benefit Estimates"
+#' author: "Adapted for the SJR PTM by Abbey Camaclang"
+#' date: "24 July 2019"
+#' output: github_document
+#' ---
+#' 
+#' This code  
+#' a) calculates benefits of each strategy (strategy performance - baseline performance) for each ecological group,  
+#' b) aggregates (averages) across experts, and  
+#' c) calculates expected performance under each strategy based on the aggregated benefit estimate.  
+#'   
+#' Based on first part of Step 2 section of 1_Cost-Effectiveness.R code from FRE PTM project and
+#' uses **Estimates_std_wide.csv** from *standardizeConfidence.R*.  
+#'   
+#' If some of the expert estimates need to be weighted differently, must provide a table listing the species in each 
+#' ecological group *EcolGroupsList.csv* and a table *SpecialCases.csv* indicating which expert estimates for which 
+#' ecological groups and strategies require different weights, and the number of species scored for that estimate.
+#' 
+#+ warning = FALSE, message = FALSE
 library(tidyverse)
 library(here)
-```
 
-Specify how estimates should be aggregated
-
-``` r
+#' Specify how estimates should be aggregated
 # (1) if weighting each expert estimate based on the number of species in each group that they scored,  
 # (0) if assuming all species in the group were considered in the estimate
 wt.by.numspp <- 1 
-```
 
-Read in and prepare data
-
-``` r
+#' Read in and prepare data
+#+ warning = FALSE, message = FALSE
 subfolder <- here("data")
 resultfolder <- here("results")
 rlong.wide <- read_csv(paste0(resultfolder, "/Estimates_std_wide.csv"))
@@ -38,11 +38,8 @@ rlong.wide$Ecological.Group <- as_factor(rlong.wide$Ecological.Group)
 wide.colnames <- colnames(rlong.wide)
 idx.colnames <- which(str_detect(wide.colnames, "Confidence") == 1)
 DF <- rlong.wide[,-(idx.colnames)]
-```
 
-Calculate benefit: subtract baseline performance from strategy performance for each expert
-
-``` r
+#' Calculate benefit: subtract baseline performance from strategy performance for each expert
 base.mat <- DF[3:5]
 strat.mat <- DF[6:ncol(DF)]  
 
@@ -51,11 +48,9 @@ ben.mat[ben.mat < 0] <- 0
 
 ben.mat <- cbind(DF[,1:2], ben.mat )
 base.mat <- cbind(DF[,1:2], base.mat)
-```
 
-Aggregate benefit estimates: average benefit estimates for each species group + strategy across experts
-
-``` r
+#' Aggregate benefit estimates: average benefit estimates for each species group + strategy across experts
+#+ warning = FALSE, message = FALSE
 if (wt.by.numspp == 1) {
   
   # Re-organize benefits table to make it easier to weight estimates
@@ -138,30 +133,20 @@ if (wt.by.numspp == 1) {
       
     }
   }
-```
 
-Calculate averaged performance: add averaged benefit estimates to the (averaged) baseline
-
-``` r
+#' Calculate averaged performance: add averaged benefit estimates to the (averaged) baseline
 exp.pop <- ben.mat.agg[,2:ncol(ben.mat.agg)] + as.matrix(base.mat.agg[,2:ncol(base.mat.agg)])
 exp.pop <- cbind(base.mat.agg, exp.pop)
 
 # print(exp.pop)
-```
 
-Weight benefits by number of species in group (multiply) for calculating CE scores
-
-``` r
+#' Weight benefits by number of species in group (multiply) for calculating CE scores
 grpwtd_ben <- ben.mat.agg[,2:ncol(ben.mat.agg)]*numspp
 grpwtd_ben <- cbind(ben.mat.agg[,1], grpwtd_ben)
 names(grpwtd_ben)[1] <- "Ecological.Group"
-```
 
-Output results
-
-``` r
+#' Output results
 # write_csv(ben.mat.agg, "./results/Estimates_aggregated_benefits.csv")
 # write_csv(base.mat.agg, "./results/Estimates_aggregated_baseline.csv")
 # write_csv(exp.pop, "./results/Estimates_aggregated_performance.csv")
 # write_csv(grpwtd_ben, "./results/Estimates_aggregated_benefits_groupwtd.csv") # for calculating CE scores
-```

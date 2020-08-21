@@ -1,35 +1,33 @@
-Plot Standardized Benefit Estimates
-================
-Adapted for the SJR PTM by Abbey Camaclang
-10 Jul 2019
+#' ---
+#' title: "Plot Standardized Benefit Estimates"
+#' author: "Adapted for the SJR PTM by Abbey Camaclang"
+#' date: "10 Jul 2019"
+#' output: github_document
+#' ---
 
-Based on *Boxplot\_script.R* from FRE PTM project This script creates two plots for each Ecological Group:
-1) boxplots of the best guess, lower, and upper estimates for each Strategy from all Experts;
-2) pointrange plots showing the best guess, lower and upper estimates of each Expert for each Strategy.
-NOTE: need to create 2 subfolders named 'boxplots' and 'pointrange' where plots will be saved.
-
-It requires output from *standardizeConfidence.R*, which standardizes the individual estimates to 80% confidence level and saves results as **Estimates\_std\_long.csv**
-
-Load packages
-
-``` r
+#' Based on *Boxplot_script.R* from FRE PTM project 
+#' This script creates two plots for each Ecological Group:  
+#' 1) boxplots of the best guess, lower, and upper estimates for each Strategy from all Experts;  
+#' 2) pointrange plots showing the best guess, lower and upper estimates of each Expert for each Strategy.  
+#' NOTE: need to create 2 subfolders named 'boxplots' and 'pointrange' where plots will be saved.  
+#'
+#' It requires output from *standardizeConfidence.R*, which standardizes the individual estimates to 80% confidence level
+#' and saves results as **Estimates_std_long.csv**
+#' 
+#' Load packages
+#+ message = FALSE, warning = FALSE
 library(tidyverse)
 library(ggplot2)
 library(cowplot)
 library(gridExtra)
 library(here)
-```
 
-Read in data from benefits aggregation
-
-``` r
+#' Read in data from benefits aggregation
+#+ warning = FALSE, message = FALSE
 subfolder <- here("results")
 rlong.std <- read_csv(paste0(subfolder, "/Estimates_std_long.csv")) # use read_csv to make sure factors read in as character
-```
 
-Prepare data for plotting
-
-``` r
+#' Prepare data for plotting 
 strat.levels <- unique(rlong.std$Strategy)
 grp.levels <- unique(rlong.std$Ecological.Group)
 est.levels <- c("Lower", "Best.Guess", "Upper")
@@ -41,14 +39,9 @@ rlong.std$Strategy <- factor(rlong.std$Strategy, levels = strat.levels)
 # Subset to remove confidence estimates
 rlong.std <- subset(rlong.std, Est.Type %in% c("Best.Guess", "Lower", "Upper"))
 rlong.std$Est.Type <- factor(rlong.std$Est.Type, levels = est.levels)
-```
 
-Boxplots
---------
-
-Plot group estimates as boxplots and save as .pdf
-
-``` r
+#' ## Boxplots
+#' Plot group estimates as boxplots and save as .pdf
 for (j in seq_along(expcode)) {
   
   grp.list <- list()
@@ -110,16 +103,10 @@ for (j in seq_along(expcode)) {
 }
 
 print(temp.plot)
-```
 
-![](createBoxplots_files/figure-markdown_github/unnamed-chunk-4-1.png)
+#' ## Pointrange plots
+#' Plots each expert estimate separately (x-axis = Expert, y-axis point = Best guess, range = lower->upper)
 
-Pointrange plots
-----------------
-
-Plots each expert estimate separately (x-axis = Expert, y-axis point = Best guess, range = lower-&gt;upper)
-
-``` r
 # Rearrange table so estimates for each group * strategy are on the same row
 rlong.sub2 <- rlong.std[,c(1,2,5,6,7)]
 rlong.std.wide <- spread(rlong.sub2,key=Est.Type,value=St.Value)
@@ -187,6 +174,3 @@ for (j in seq_along(expcode)) {
 }
 
 print(temp.plot2)
-```
-
-![](createBoxplots_files/figure-markdown_github/unnamed-chunk-5-1.png)

@@ -24,7 +24,7 @@ Read in and tidy data
 ---------------------
 
 ``` r
-subfolder <- here("data")
+subfolder <- here("results")
 estimates <- read.csv(paste0(subfolder,"/Estimates_combined.csv"))
 # head(estimates)
 ```
@@ -50,7 +50,7 @@ head(rlong)
 
 ``` r
 rlong <- na.omit(rlong)
-# write_csv(rlong, "./data/Estimates_tidy.csv")
+# write_csv(rlong, "./results/Estimates_tidy.csv")
 
 rlong$Value <- as.numeric((rlong$Value))
 # str(rlong) # Check data type
@@ -65,7 +65,7 @@ Tabulate how many expert estimates there are for each ecological group
 table.data <-spread(rlong, Estimate, Value) 
 table.subset <- table.data[, c(1, 2)] # Subset table.data to only include the columns "Expert" and "Ecological.Group"
 exp.table <- table(table.subset$Ecological.Group)
-# write.csv(exp.table, "./data/Estimates_count_group.csv", row.names=FALSE)
+# write.csv(exp.table, "./results/Estimates_count_group.csv", row.names=FALSE)
 exp.table
 ```
 
@@ -114,7 +114,7 @@ table.subset2 <- subset(rlong, Est.Type=="Best.Guess") # Subset to count how man
 strat.levels <- unique(table.subset2$Strategy)
 table.subset2$Strategy <- factor(table.subset2$Strategy,levels = strat.levels)
 st.table <- table(table.subset2$Ecological.Group, table.subset2$Strategy)
-# write.csv(st.table, "./data/Estimates_count_strategy.csv")
+# write.csv(st.table, "./results/Estimates_count_strategy.csv")
 st.table
 ```
 
@@ -224,6 +224,6 @@ rlong.wide$Ecological.Group<-factor(rlong.wide$Ecological.Group, levels=grp.leve
 rlong.wide <- with(rlong.wide, rlong.wide[order(Expert, Ecological.Group),]) 
 
 # Output results
-# write_csv(rlong.wide, "./data/Estimates_std_wide.csv") 
-# write_csv(rlong.std, "./data/Estimates_std_long.csv")
+# write_csv(rlong.wide, "./results/Estimates_std_wide.csv") 
+# write_csv(rlong.std, "./results/Estimates_std_long.csv")
 ```

@@ -1,20 +1,23 @@
-Compile Expert Estimates
-================
-Adapted for the SJR PTM by Abbey Camaclang
-3 July 2019
+#' ---
+#' title: "Compile Expert Estimates"
+#' author: "Adapted for the SJR PTM by Abbey Camaclang"
+#' date: "3 July 2019"
+#' output: github_document
+#' ---
 
-This script reads individual expert estimates from multiple .csv files and compiles them into a single **Estimates\_combined.csv** file. It requires that each expert table is saved as a .csv file in a *benefits* subfolder within the *data* folder, contain the same number of rows and columns, and no other .csv files are in the same folder.
+#' This script reads individual expert estimates from multiple .csv files
+#' and compiles them into a single **Estimates_combined.csv** file.
+#' It requires that each expert table is saved as a .csv file in a *benefits* subfolder within the *data* folder, 
+#' contain the same number of rows and columns, and no other .csv files are in the same folder.
 
-``` r
+#+ warning = FALSE, message = FALSE
 library(stringi)
 library(tidyverse)
 library(naniar)
 library(here)
-```
-
-Read in the individual tables of expert estimates and combine. NOTE to maintain confidentiality, only sample tables are provided
-
-``` r
+ 
+#' Read in the individual tables of expert estimates and combine. NOTE to maintain confidentiality, only sample tables are provided
+#+ warning = FALSE, message = FALSE
 subfolder <- here("data", "benefits")
 files <- list.files(path = paste(subfolder, "/", sep=""), # Name of the subfolder in working directory that contains the files
            pattern = "*.csv", 
@@ -39,19 +42,13 @@ for (i in 2:length(experts)){ # else use length(files) if all estimates are avai
     add_column(.,Expert=rep(experts[i],ngroups),.before="Ecological Group")
   byexpert<-rbind(byexpert,temp)
   }
-```
 
-Recode "X" to NA
-
-``` r
+#' Recode "X" to NA
 na_strings <- c("X", "X ", "x", "x ")
 byexpert <- byexpert %>% 
   replace_with_na_all(condition=~.x %in% na_strings)
-```
 
-Recode "B" to baseline values
-
-``` r
+#' Recode "B" to baseline values
 # Get the baseline values
 bestguess_base <- byexpert[,grep("Best guess$", colnames(byexpert))]
 lower_base <- byexpert[,grep("Lower$", colnames(byexpert))]
@@ -77,21 +74,14 @@ for (i in 1:length(bestguess)) {
   
   byexpert[l_temp,conf[i]] <- conf_base[l_temp,] # using the index for lower as some may have been left blank/NA
 }
-```
 
-Standardize group labels if needed (this will be project specific)
-
-``` r
+#' Standardize group labels if needed (this will be project specific)
 byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Mature Forest Species")==1)] <- "Mature Forest and Peatland Species"
 byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Mature Forest/ Peatland Species")==1)] <- "Mature Forest and Peatland Species"
 byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Mature Forest/Peatland Species")==1)] <- "Mature Forest and Peatland Species"
 byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Grassland/Open Habitat species")==1)] <- "Grassland, Open, or Agricult Assoc"
 byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Grassland or Open Habitat Species")==1)] <- "Grassland, Open, or Agricult Assoc"
 byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Forest Openings and Young Forest")==1)] <- "Forest Openings and Young Forest Species"
-```
 
-Output results
-
-``` r
+#' Output results
 # write_csv(byexpert, "./results/Estimates_combined.csv")
-```
