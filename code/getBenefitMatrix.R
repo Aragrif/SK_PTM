@@ -19,7 +19,7 @@ library(here)
 
 #' Read in data tables
 #+ warning = FALSE, message = FALSE
-subfolder <- here("data")
+subfolder <- here("results")
 ben.mat.agg <- read_csv(paste0(subfolder, "/Estimates_aggregated_benefits_rev.csv"))
 base.mat.agg <- read_csv(paste0(subfolder, "/Estimates_aggregated_baseline.csv"))
 
@@ -59,7 +59,7 @@ perf.mat <- joinedbase.wide[,5:ncol(joinedbase.wide)] + as.matrix(base.mat)
 perf.mat <- cbind(joinedbase.wide$Ecological.Group,base.mat,perf.mat)
 names(perf.mat)[1] <- "Ecological.Group"
 
-# write_csv(perf.mat, "./results/Expected_Performance.csv") 
+# write_csv(perf.mat, "./results/Expected_Performance.csv")
 
 # Create expected performance matrix for complementarity analysis (optimization) and uncertainty analysis
 # Best guess (most likely) estimates
