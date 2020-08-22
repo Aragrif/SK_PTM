@@ -34,11 +34,12 @@ Prepare data for sampling
 
 ``` r
 datafolder <- here("data")
-costfeas <- read_csv(paste0(datafolder, "/CostFeas_rev.csv"))
+resultfolder <- here("results")
+costfeas <- read_csv(paste0(resultfolder, "/CostFeas_rev.csv"))
 costfeas$Strategy <- as_factor(costfeas$Strategy)
 costfeas <- costfeas[-1,] # Remove baseline values
 
-rlong.std <- read_csv(paste0(datafolder, "/Estimates_std_long.csv")) # use read_csv to make sure factors read in as character
+rlong.std <- read_csv(paste0(resultfolder, "/Estimates_std_long.csv")) # use read_csv to make sure factors read in as character
 
 # Specify factor levels
 grp.levels <- unique(rlong.std$Ecological.Group)
@@ -155,7 +156,7 @@ spcases.S23 <- spcases %>%
   filter(Strategy == "S22") %>%
   mutate(Strategy = "S23")
 spcases.all <- rbind(spcases, spcases.S23)
-# write_csv(spcases.all, "./results/SpecialCases_new.csv") # saves a copy of original table
+# write_csv(spcases.all, "./results/SpecialCases_new.csv")
 ```
 
 Uncertainty analysis for benefit uncertainty
@@ -169,9 +170,7 @@ Benefits_uncrtn <- list()
 set.seed(1565)
 
 for(it in 1:MC){
-  # rnd <- runif(1,1,999999)
-  # set.seed(rnd)
-  
+ 
   # Sample benefit values
   samples[,it] <- rpert(nrow(rlong.std.wide),
                         min = rlong.std.wide$Lower,
@@ -185,7 +184,7 @@ for(it in 1:MC){
   temp.strat <- select(temp.wide, as.character(newstrat.levels[2]):as.character(newstrat.levels[length(newstrat.levels)])) 
   
   temp.ben <- temp.strat - temp.wide$Baseline
-  temp.ben[temp.ben<0] <- 0 # replaces negative values with 0 (assume same as baseline)
+  temp.ben[temp.ben<0] <- 0 # replaces negative values with 0 (assume same as baseline) - Constrained samples
   temp.ben <- cbind(temp.wide[,1:2], temp.ben) 
   
   temp.long <- gather(temp.ben, key = Strategy, value = MCValue, -c(1:2))
@@ -288,10 +287,10 @@ MC.Ranks <- matrix(unlist(MC.CE_Rank), ncol = MC, byrow = FALSE)
 MC.Ranks <- data.frame(strat.est$Strategy[1:length(strat.est$Strategy)], MC.Ranks)
 names(MC.Ranks)[1] <- "Strategy"
 
+MC_Samples <- data.frame(rlong.std.wide[,1:3], samples)
+
 # write_csv(MC.Results, "./results/Uncertainty_CEScores_benefits.csv")
 # write_csv(MC.Ranks, "./results/Uncertainty_CERanks_benefits.csv")
-
-MC_Samples <- data.frame(rlong.std.wide[,1:3], samples)
 # write_csv(MC_Samples, "./results/MC_PerfSamples_benefits_constr.csv")
 # saveRDS(Benefits_uncrtn, "./results/Benefits_uncrtn_constr.rds") # if doing uncertainty analysis for the complementarity optimization
 ```
