@@ -42,7 +42,7 @@ library(here)
 resultfolder <- here("results")
 datafolder <- here("data")
 benefits.matrix <- read.csv(paste0(resultfolder, "/BestGuess.csv"), row.names = 1) # expected probability of persistence for each Strategy (rows) and Species Group (columns), including baseline
-costfeas <- read_csv(paste0(datafolder, "/CostFeas_rev.csv")) # estimated Cost and Feasibility (columns 2 & 3) for each Strategy (col 1), including baseline
+costfeas <- read_csv(paste0(resultfolder, "/CostFeas_rev.csv")) # estimated Cost and Feasibility (columns 2 & 3) for each Strategy (col 1), including baseline
 cost.vector <- costfeas$Cost
 names(cost.vector) <- costfeas$Strategy
 combo.strategies <- read.csv(paste0(datafolder, "/SJR_StrategyCombinations.csv"), header = TRUE) # list of individual strategies that make up each strategy (in columns). Should have a column for baseline and all strategies
