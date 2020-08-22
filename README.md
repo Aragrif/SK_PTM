@@ -1,24 +1,34 @@
 # SaintJohnRiver_PTM
 
-Archive of data, code, and results of the Saint John River watershed Priority Threat Management analysis, manuscript submitted 29 Mar 2020 to Conservation Science and Practice.
+Archive of data, code, and results of the Saint John River watershed Priority Threat Management analysis, manuscript submitted 29 Mar 2020 to Conservation Science and Practice. Note that data tables that show individual expert estimates are excluded from this archive, according to the terms of the confidentiality agreement.
 
-## data
+## data/
 
-Note that raw data files of expert estimates (/benefits/ExpXX.csv, where XX are expert ID numbers) and SpecialCases.csv were excluded from this archive to maintain expert confidentiality. Other derived data tables that show individual expert estimates were also excluded from this archive.
-
-### EcolGroupsList.csv
-* table with ecological groups (columns) with group names as headers, and the common names of species/communities included in the group (rows)
-
-### CostFeas.csv
-* summary table of (original) strategy names (S1-S22, where S22 is 'All Strategies'), total (discounted) costs over 25 years, and estimated feasibility
+### benefits/
+* raw data files of expert estimates (/benefits/expXX.csv, where XX are expert ID numbers) were excluded from this archive to maintain expert confidentiality. A blank table (exp00.csv) is provided instead for reference. 
 
 ### cost/SJR_CostFeasibility_Final.xlsx
 * raw data on estimated costs of each individual action within a strategy. All identifying information has been removed to maintain expert confidentiality.
 
+### EcolGroupsList.csv
+* table with ecological groups (columns) with group names as headers, and the common names of species/communities included in the group (rows)
+
 ### SJRStrategyCombinations.csv
 * table of strategies (Baseline, S1-S23) and the individual strategies that are part of combination strategies (S17-S23) - used in complementarity analysis
 
-## code
+### SpecialCases.csv
+* info on number of species in each group that individual experts based their estimates on, where this is less than the total number of species in the group
+
+### CostFeas.csv
+* summary table of (original) strategy names (S1-S22, where S22 is 'All Strategies'), total (discounted) costs over 25 years, and estimated feasibility
+
+### SJR_StrategyPerformance_Aggregated.xlsx
+* standardized and aggregated expert estimates of the probability of persistence of each group under the baseline and each strategy
+
+### SJR_BenefitsWorksheet_blank.xlsx
+* sample spreadsheet used to elicit expert judgment on performance of management strategies
+
+## code/
 
 ### manageData/combineTables.R 
 * reads individual expert estimate tables and combines them into single Estimates_combined.csv file (not included in this archive)
