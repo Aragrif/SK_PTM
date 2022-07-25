@@ -12,13 +12,14 @@
 
 #+ warning = FALSE, message = FALSE
 #+ 
-library(readxl)
+
 library(stringi)
 library(dplyr)
 library(tidyverse)
 library(data.table)
 library(here)
 
+setwd('D:/UBC/R_code/SKAnalysis/data/benefits')
 #' Read in the individual tables of expert estimates and combine. NOTE to maintain confidentiality, only sample tables are provided
 #+ warning = FALSE, message = FALSE
 subfolder <- here("data", "benefits")
@@ -28,20 +29,20 @@ files <- list.files(path = paste(subfolder, "/", sep=""), # Name of the subfolde
 
 #are all these needed? Should these be added in to the reorganizing step?
 skiplines <- 16 # number of header rows to skip (first few lines contain worksheet instructions which are not needed)
-nstrat <- 11 # number of management strategies (including combinations, but excluding baseline)
-numcols <- (nstrat+1) #*5 + 1 # total number of columns to read in (5 columns for each strategy and the baseline [Best guess, Lower, Upper, Confidence, and a Quality check column], plus 1 column for group names)
-ngroups <- 5 # number of ecological groups (rows)
-numrows <- (ngroups+1)*5 + 1 # total number of columns to read in (5 rows for each strategy and the example [Best guess, Lower, Upper, Confidence, and a Quality check column], plus 1 row for group names)
+nstrat <- 17 # number of management strategies (including combinations, but excluding baseline)
+numcols <- (nstrat+1+2) #*5 + 1 # total number of columns to read in (5 columns for each strategy and the baseline [Best guess, Lower, Upper, Confidence, and a Quality check column], plus 1 column for group names)
+ngroups <- 7 # number of ecological groups (rows)
+numrows <- (ngroups+1)*3 + 1 # total number of row to read in (5 rows for each strategy and the example [Best guess, Lower, Upper, Confidence, and a Quality check column], plus 1 row for group names)
 experts <- c(1:4) # vector of expert codes, should correspond to the same order as in 'files'
 
 #temp <- read.csv("/content/Benefits_Template_datacheck_combined_strategy3.csv", skip=skiplines, header=TRUE)
-temp <- read.csv(files[1], skip = skiplines) 
-#temp <-temp[temp$X != "CHECK",] <- #remove rows with "CHECK"
-#temp <-temp[temp$X != "Confidence",] #remove rows with Confidence
-#byexpert <- temp
+temp <- read.csv(files[1], skip = skiplines, nrows = numrows)
+temp <- temp %>% 
+    select(0:numcols) %>%
+    filter(!row_number() %in% c(1))
 
 #ecological groups
-ecodata <- pull(temp, Ecological.Group) #create a group of ecological names
+ecodata <- pull(temp, Ecological.Groups) #create a group of ecological names
 ecodata <- data_frame(as.data.frame(ecodata))
 
 #remove blank rows from ecological groups
@@ -53,7 +54,10 @@ Expert <- list()
 e = 0
 
 for (i in 2:length(experts)){ # else use length(files) if all estimates are available
-  temp <- read.csv(files[i], skip = skiplines) #shouldn't read a file in a loop? Do I need to to read each expert estimate?
+  temp <- read.csv(files[1], skip = skiplines, nrows = numrows)
+  temp <- temp %>% 
+    select(0:numcols) %>%
+    filter(!row_number() %in% c(1))#shouldn't read a file in a loop? Do I need to to read each expert estimate?
   e = e+1 #counter for number of experts/sheets
   temp <- rename(temp,c('Col'='X'))
   temp <- temp[!grepl("CHECK", temp$Col),]
@@ -99,12 +103,15 @@ byexpert <- byexpert %>%
   rename(`Ecological Group` = `ecodata`) 
 
 #' Standardize group labels if needed (this will be project specific)
-byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "EXAMPLE")==1)] <- "EXAMPLE"
-byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Aquatic")==1)] <- "Aquatic Species"
-byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Grassland")==1)] <- "Grassland Species"
-byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Amphibians")==1)] <- "Amphibians"
-byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Sand Dunes")==1)] <- "Sand Dune Species"
-byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Miscel.")==1)] <- "Other Species"
+byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "example only, values are random")==1)] <- "EXAMPLE"
+byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "GRASSLAND SPECIES")==1)] <- "Grassland Species"
+byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "BURROW/DEN AND ASSOCIATED SPECIES")==1)] <- "Burrow and Den Species"
+byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "SAND DUNE SPECIES")==1)] <- "Sand Dune Species"
+byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "WETLAND AND SHOREBIRD SPECIES")==1)] <- "Wetland and Shorebird Species"
+byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "AMPHIBIANS")==1)] <- "Amphibians"
+byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "FISH SPECIES")==1)] <- "Fish Species"
+byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "HEALTHY PRAIRIE LANDSCAPE")==1)] <- "Healthy Prairire Landscape"
+
 
 #' Output results
 #write_csv(byexpert, "./results/Estimates_combined.csv")
