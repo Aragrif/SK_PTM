@@ -1,7 +1,7 @@
 #' ---
-#' title: "Compile Expert Estimates"
-#' author: "Adapted for the SJR PTM by Abbey Camaclang"
-#' date: "3 July 2019"
+#' title: "combineTables.R"
+#' author: "Adapted for the SK PTM by Griffy J. Vigneron"
+#' date: "22 June 2022"
 #' output: github_document
 #' ---
 
@@ -11,77 +11,100 @@
 #' contain the same number of rows and columns, and no other .csv files are in the same folder.
 
 #+ warning = FALSE, message = FALSE
+#+ 
+library(readxl)
 library(stringi)
+library(dplyr)
 library(tidyverse)
-library(naniar)
+library(data.table)
 library(here)
- 
+
 #' Read in the individual tables of expert estimates and combine. NOTE to maintain confidentiality, only sample tables are provided
 #+ warning = FALSE, message = FALSE
 subfolder <- here("data", "benefits")
 files <- list.files(path = paste(subfolder, "/", sep=""), # Name of the subfolder in working directory that contains the files
-           pattern = "*.csv", 
-           full.names = T)
+                    pattern = "*.csv", 
+                    full.names = T)
 
-skiplines <- 14 # number of header rows to skip (first few lines contain worksheet instructions which are not needed)
-nstrat <- 22 # number of management strategies (including combinations, but excluding baseline)
-numcols <- (nstrat+1)*5 + 1 # total number of columns to read in (5 columns for each strategy and the baseline [Best guess, Lower, Upper, Confidence, and a Quality check column], plus 1 column for group names)
-ngroups <- 9 # number of ecological groups (rows)
-experts <- c(1:19) # vector of expert codes, should correspond to the same order as in 'files'
+#are all these needed? Should these be added in to the reorganizing step?
+skiplines <- 16 # number of header rows to skip (first few lines contain worksheet instructions which are not needed)
+nstrat <- 11 # number of management strategies (including combinations, but excluding baseline)
+numcols <- (nstrat+1) #*5 + 1 # total number of columns to read in (5 columns for each strategy and the baseline [Best guess, Lower, Upper, Confidence, and a Quality check column], plus 1 column for group names)
+ngroups <- 5 # number of ecological groups (rows)
+numrows <- (ngroups+1)*5 + 1 # total number of columns to read in (5 rows for each strategy and the example [Best guess, Lower, Upper, Confidence, and a Quality check column], plus 1 row for group names)
+experts <- c(1:4) # vector of expert codes, should correspond to the same order as in 'files'
 
-temp <- read_csv(files[1], skip = skiplines) 
-temp <- temp[1:ngroups,1:numcols] %>% # Keeps only the relevant rows and columns 
-  select(.,-contains("Quality")) %>% # Excludes the columns used to check data quality
-  add_column(.,Expert=rep(experts[1],ngroups),.before="Ecological Group") # add a column for expert code
-byexpert <- temp
+#temp <- read.csv("/content/Benefits_Template_datacheck_combined_strategy3.csv", skip=skiplines, header=TRUE)
+temp <- read.csv(files[1], skip = skiplines) 
+#temp <-temp[temp$X != "CHECK",] <- #remove rows with "CHECK"
+#temp <-temp[temp$X != "Confidence",] #remove rows with Confidence
+#byexpert <- temp
+
+#ecological groups
+ecodata <- pull(temp, Ecological.Group) #create a group of ecological names
+ecodata <- data_frame(as.data.frame(ecodata))
+
+#remove blank rows from ecological groups
+ecodata <- ecodata[!apply(ecodata == "", 1, all), ]
+
+#create empty dataframe for output
+byexpert <- data.frame() 
+Expert <- list()
+e = 0
 
 for (i in 2:length(experts)){ # else use length(files) if all estimates are available
-  temp <- read_csv(files[i], skip = skiplines)
-  temp <- temp[1:ngroups,1:numcols] %>%
-    select(.,-contains("Quality")) %>%
-    add_column(.,Expert=rep(experts[i],ngroups),.before="Ecological Group")
-  byexpert<-rbind(byexpert,temp)
+  temp <- read.csv(files[i], skip = skiplines) #shouldn't read a file in a loop? Do I need to to read each expert estimate?
+  e = e+1 #counter for number of experts/sheets
+  temp <- rename(temp,c('Col'='X'))
+  temp <- temp[!grepl("CHECK", temp$Col),]
+  temp <- temp[!grepl("CONFIDENCE", temp$Col),]
+  
+  
+  #create data frame for loop output with row names for Ecological Groups
+  df<-ecodata
+  
+  #reorganize estimates
+  for (i in 1:nrow(ecodata)) { #for all ecological groups (including example)
+    n = 2 #starts from two, so eco groups are first column
+    Expert <- append(Expert, e)
+    for (j in 3:nstrat) { #for all strategies (starts from 3rd col)
+      for (k in 1:3) { #do this 3 times: best, lower, upper -> this should be changed if including confidence/CHECK
+        df[i,n]= temp[(i-1)*3+k,j] #number of rows - 1, 5 times + 3
+        n = n+1
+      } 
+    }
   }
-
-#' Recode "X" to NA
-na_strings <- c("X", "X ", "x", "x ")
-byexpert <- byexpert %>% 
-  replace_with_na_all(condition=~.x %in% na_strings)
-
-#' Recode "B" to baseline values
-# Get the baseline values
-bestguess_base <- byexpert[,grep("Best guess$", colnames(byexpert))]
-lower_base <- byexpert[,grep("Lower$", colnames(byexpert))]
-upper_base <- byexpert[,grep("Upper$", colnames(byexpert))]
-conf_base <- byexpert[,grep("Confidence$", colnames(byexpert))]
-
-# Find strategy column indices
-bestguess <- grep("Best guess_",colnames(byexpert))
-lowest <- grep("Lower_", colnames(byexpert))
-highest <- grep("Upper_", colnames(byexpert))
-conf <- grep("Confidence_",colnames(byexpert))
-
-# For each relevant column, replace "b" with baseline values from the same row
-for (i in 1:length(bestguess)) {
-  bg_temp <- which(byexpert[,bestguess[i]]=="B" | byexpert[,bestguess[i]]=="b")
-  byexpert[bg_temp,bestguess[i]] <- bestguess_base[bg_temp,]
   
-  l_temp <- which(byexpert[,lowest[i]]=="B" | byexpert[,lowest[i]]=="b")
-  byexpert[l_temp,lowest[i]] <- lower_base[l_temp,]
-  
-  u_temp <- which(byexpert[,highest[i]]=="B" | byexpert[,highest[i]]=="b")
-  byexpert[u_temp,highest[i]] <- upper_base[u_temp,]
-  
-  byexpert[l_temp,conf[i]] <- conf_base[l_temp,] # using the index for lower as some may have been left blank/NA
+  byexpert <-rbind(df, byexpert)
 }
 
+#Add expert column
+byexpert %>% add_column(newColname = "Expert")
+byexpert$Expert <- Expert
+byexpert <- byexpert %>% 
+  select(Expert, everything()) #place expert column in 1st position
+
+#Add header names: Best, Lowest, Highest 
+n = 3
+s = 1 #counter for strategy number
+for(j in 3:nstrat){ #for each strategy
+  for(k in 1:3){ #best, lowest, highest
+    names(byexpert)[n] <- paste(toString(temp[k,2]), "_", s)
+    n = n+1
+  } 
+  s = s+1  
+}
+
+byexpert <- byexpert %>%
+  rename(`Ecological Group` = `ecodata`) 
+
 #' Standardize group labels if needed (this will be project specific)
-byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Mature Forest Species")==1)] <- "Mature Forest and Peatland Species"
-byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Mature Forest/ Peatland Species")==1)] <- "Mature Forest and Peatland Species"
-byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Mature Forest/Peatland Species")==1)] <- "Mature Forest and Peatland Species"
-byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Grassland/Open Habitat species")==1)] <- "Grassland, Open, or Agricult Assoc"
-byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Grassland or Open Habitat Species")==1)] <- "Grassland, Open, or Agricult Assoc"
-byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Forest Openings and Young Forest")==1)] <- "Forest Openings and Young Forest Species"
+byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "EXAMPLE")==1)] <- "EXAMPLE"
+byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Aquatic")==1)] <- "Aquatic Species"
+byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Grassland")==1)] <- "Grassland Species"
+byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Amphibians")==1)] <- "Amphibians"
+byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Sand Dunes")==1)] <- "Sand Dune Species"
+byexpert$`Ecological Group`[which(str_detect(byexpert$`Ecological Group`, "Miscel.")==1)] <- "Other Species"
 
 #' Output results
-# write_csv(byexpert, "./results/Estimates_combined.csv")
+#write_csv(byexpert, "./results/Estimates_combined.csv")
