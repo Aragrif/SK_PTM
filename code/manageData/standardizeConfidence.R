@@ -25,7 +25,7 @@ library(here)
 #' ## Read in and tidy data
 #+ warning = FALSE, message = FALSE
 subfolder <- here("results")
-estimates <- read.csv(paste0(subfolder,"/Estimates_combined.csv"))
+estimates <- read.csv("./results/Estimates_combined.csv")
 # head(estimates)
 
 #' Use tidyr package to transform data to tidy version, with single columns for Estimate (e.g., best guess, lower, upper) and Value (value of estimate, 0-100)
@@ -33,7 +33,8 @@ rlong <-
   gather(estimates,
          key = Estimate,
          value = Value,
-         Best.guess:Confidence_22)
+         Best.guess:Upper_14
+  )
 head(rlong)
 
 rlong <- na.omit(rlong)
@@ -64,7 +65,7 @@ rlong$Est.Type <- "BLANK" # creates a new column in the table
 rlong$Est.Type[grep("Best.guess", rlong$Estimate)] <- "Best.Guess"
 rlong$Est.Type[grep("Lower", rlong$Estimate)] <- "Lower"
 rlong$Est.Type[grep("Upper", rlong$Estimate)] <- "Upper"
-rlong$Est.Type[grep("Confidence", rlong$Estimate)] <- "Confidence"
+#rlong$Est.Type[grep("Confidence", rlong$Estimate)] <- "Confidence"
 
 #' Tabulate how many estimates there are for each strategy
 table.subset2 <- subset(rlong, Est.Type=="Best.Guess") # Subset to count how many experts provided estimates for each group and strategy
@@ -82,7 +83,7 @@ st.table
 #'     * Upper standardized interval: B+((U−B)×(S∕C))  
 #' 3) Leave Best Guess estimate as is  
 
-S <- 0.8 # confidence level to standardize estimates to
+#S <- 0.8 # confidence level to standardize estimates to
 
 #' Subset dataframe by estimate type 
 bg <- subset(rlong, Est.Type == "Best.Guess")
@@ -98,38 +99,38 @@ conf <- subset(rlong, Est.Type == "Confidence")
 # test4 <- sum(bg$Expert == low$Expert) # checks that Experts also align
 
 #' Create copies of the datasets and add new columns with the standardized estimates
-low.new <- low
-up.new <- up
-bg.new <- bg
-conf.new <- conf
+#low.new <- low
+#up.new <- up
+#bg.new <- bg
+#conf.new <- conf
 
-conf.new$St.Value <- (conf$Value) / 100
-low.new$St.Value <-
-  bg$Value - (((bg$Value) - (low$Value)) * (S / (conf.new$St.Value)))
-up.new$St.Value <-
-  bg$Value + (((up$Value) - (bg$Value)) * (S / (conf.new$St.Value)))
-bg.new$St.Value <- bg$Value
+#conf.new$St.Value <- (conf$Value) / 100
+#low.new$St.Value <-
+#  bg$Value - (((bg$Value) - (low$Value)) * (S / (conf.new$St.Value)))
+#up.new$St.Value <-
+#  bg$Value + (((up$Value) - (bg$Value)) * (S / (conf.new$St.Value)))
+#bg.new$St.Value <- bg$Value
 
 #' Combine into new tables and saves standardized estimates into .csv files
-rlong.std <- rbind(low.new, up.new, bg.new, conf.new) 
+#rlong.std <- rbind(low.new, up.new, bg.new, conf.new) 
 
 # Constrain standardized values to 0 - 100
-rlong.std$St.Value[rlong.std$St.Value < 0] <- 0 
-rlong.std$St.Value[rlong.std$St.Value > 100] <- 100
+#rlong.std$St.Value[rlong.std$St.Value < 0] <- 0 
+#rlong.std$St.Value[rlong.std$St.Value > 100] <- 100
 
-# Create new table in wide format
-rlong.sub <- rlong.std[,c(1,2,3,7)] 
-rlong.wide <- spread(rlong.sub, Estimate, St.Value)
+# Create new table in wide format 
+rlong.sub <- rlong[,c(1,2,3,4)] 
+rlong.wide <- spread(rlong.sub, Estimate, Value)
 
 # Make sure Strategies are in correct order
 est.levels <- unique(rlong$Estimate)
 rlong.wide <- rlong.wide[, c("Expert", "Ecological.Group", est.levels)] 
 
 # Make sure Ecological groups are in the same order as in original tables
-grp.levels <- unique(rlong.std$Ecological.Group)
+grp.levels <- unique(rlong$Ecological.Group)
 rlong.wide$Ecological.Group<-factor(rlong.wide$Ecological.Group, levels=grp.levels) 
 rlong.wide <- with(rlong.wide, rlong.wide[order(Expert, Ecological.Group),]) 
 
 # Output results
-# write_csv(rlong.wide, "./results/Estimates_std_wide.csv") 
-# write_csv(rlong.std, "./results/Estimates_std_long.csv")
+write_csv(rlong.wide, "./results/Estimates_std_wide.csv")
+write_csv(rlong, "./results/Estimates_std_long2.csv")
