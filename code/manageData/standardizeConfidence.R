@@ -72,7 +72,7 @@ table.subset2 <- subset(rlong, Est.Type=="Best.Guess") # Subset to count how man
 strat.levels <- unique(table.subset2$Strategy)
 table.subset2$Strategy <- factor(table.subset2$Strategy,levels = strat.levels)
 st.table <- table(table.subset2$Ecological.Group, table.subset2$Strategy)
-# write.csv(st.table, "./results/Estimates_count_strategy.csv")
+write.csv(st.table, "./results/Estimates_count_strategy.csv") #neeed this
 st.table
 
 #' ## Standardize to a specified confidence level
