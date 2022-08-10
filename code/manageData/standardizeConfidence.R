@@ -33,7 +33,7 @@ rlong <-
   gather(estimates,
          key = Estimate,
          value = Value,
-         Best.guess:Upper_14
+         Best.guess:Upper_17
   )
 head(rlong)
 
@@ -47,9 +47,9 @@ rlong$Value <- as.numeric((rlong$Value))
 #' ## Summarize the number of expert estimates
 #' Tabulate how many expert estimates there are for each ecological group
 table.data <-spread(rlong, Estimate, Value) 
-table.subset <- table.data[, c(1, 2)] # Subset table.data to only include the columns "Expert" and "Ecological.Group"
+table.subset <- table.data[, c(2, 3)] # Subset table.data to only include the columns "Expert" and "Ecological.Group"
 exp.table <- table(table.subset$Ecological.Group)
-# write.csv(exp.table, "./results/Estimates_count_group.csv", row.names=FALSE)
+write.csv(exp.table, "./results/Estimates_count_group.csv", row.names=FALSE)
 exp.table
 
 #' Create new columns to specify Estimate Type and Strategy separately
@@ -65,7 +65,6 @@ rlong$Est.Type <- "BLANK" # creates a new column in the table
 rlong$Est.Type[grep("Best.guess", rlong$Estimate)] <- "Best.Guess"
 rlong$Est.Type[grep("Lower", rlong$Estimate)] <- "Lower"
 rlong$Est.Type[grep("Upper", rlong$Estimate)] <- "Upper"
-#rlong$Est.Type[grep("Confidence", rlong$Estimate)] <- "Confidence"
 
 #' Tabulate how many estimates there are for each strategy
 table.subset2 <- subset(rlong, Est.Type=="Best.Guess") # Subset to count how many experts provided estimates for each group and strategy
@@ -89,7 +88,6 @@ st.table
 bg <- subset(rlong, Est.Type == "Best.Guess")
 low <- subset(rlong, Est.Type == "Lower")
 up <- subset(rlong, Est.Type == "Upper")
-conf <- subset(rlong, Est.Type == "Confidence")
 
 #' Check that order of rows are the same
 # Results should equal the number of rows in tables, if all entries are matching
@@ -119,7 +117,7 @@ conf <- subset(rlong, Est.Type == "Confidence")
 #rlong.std$St.Value[rlong.std$St.Value > 100] <- 100
 
 # Create new table in wide format 
-rlong.sub <- rlong[,c(1,2,3,4)] 
+rlong.sub <- rlong[,c(1,2,3,4,5)] 
 rlong.wide <- spread(rlong.sub, Estimate, Value)
 
 # Make sure Strategies are in correct order
@@ -133,4 +131,4 @@ rlong.wide <- with(rlong.wide, rlong.wide[order(Expert, Ecological.Group),])
 
 # Output results
 write_csv(rlong.wide, "./results/Estimates_std_wide.csv")
-write_csv(rlong, "./results/Estimates_std_long2.csv")
+write_csv(rlong, "./results/Estimates_std_long2.csv") #add line to remove index column from saved file, otherwise need to remove manually

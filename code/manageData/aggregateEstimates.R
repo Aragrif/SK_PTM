@@ -21,7 +21,14 @@
 library(tidyverse)
 library(here)
 
-#' Specify how estimates should be aggregated
+#may need to change some column names
+#for each expert, subtract strategy from baseline? average across experts
+#and then average baseline estimate, takes the average baseline estimate and adds to ___ to get new value
+#plot this??? This gives data and table only?? plot mean performance? plot average performance? 
+#play around with formatting and layout? remove references to standardization in references - should only get one figure
+
+#adjust to not have standardization?? Or no? 
+#' Specify how estimates should be aggregated - this should be based on the comments: Are their estimates for all species in the group or only a single or a few species (ie. birds or something)
 # (1) if weighting each expert estimate based on the number of species in each group that they scored,  
 # (0) if assuming all species in the group were considered in the estimate
 wt.by.numspp <- 1 
@@ -34,10 +41,10 @@ rlong.wide <- read_csv(paste0(resultfolder, "/Estimates_std_wide.csv"))
 rlong.wide$Expert <- as_factor(rlong.wide$Expert)
 rlong.wide$Ecological.Group <- as_factor(rlong.wide$Ecological.Group)
 
-# Remove confidence estimates from the table
-wide.colnames <- colnames(rlong.wide)
-idx.colnames <- which(str_detect(wide.colnames, "Confidence") == 1)
-DF <- rlong.wide[,-(idx.colnames)]
+# Remove confidence estimates from the table - don't need this?
+#wide.colnames <- colnames(rlong.wide)
+#idx.colnames <- which(str_detect(wide.colnames, "Confidence") == 1)
+#DF <- rlong.wide[,-(idx.colnames)]
 
 #' Calculate benefit: subtract baseline performance from strategy performance for each expert
 base.mat <- DF[3:5]
