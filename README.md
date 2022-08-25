@@ -1,6 +1,6 @@
-# SaintJohnRiver_PTM
+# Saskatchewan_PTM
 
-Archive of data, code, and results of the Saint John River watershed Priority Threat Management analysis, manuscript submitted 29 Mar 2020 to Conservation Science and Practice. Note that data tables that show individual expert estimates are excluded from this archive, according to the terms of the confidentiality agreement.
+Data, code, and results adapted from the Saint John River watershed Priority Threat Management analysis, manuscript submitted 29 Mar 2020 to Conservation Science and Practice. Note that data tables that show individual expert estimates are excluded from this archive, according to the terms of the confidentiality agreement.
 
 ## data/
 
