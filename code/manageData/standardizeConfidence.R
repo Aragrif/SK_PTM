@@ -1,15 +1,15 @@
 #' ---
 #' title: "Standardize Benefit Estimates"
-#' author: "Adapted for the SJR PTM by Abbey Camaclang"
-#' date: "28 June 2019"
+#' author: "Adapted for the SK PTM by Griffy J. Vigneron"
+#' date: "6 October 2022"
 #' output: github_document
 #' ---
 
-#' This script standardizes the benefit estimates and saves results tables as .csv files:  
+#' This script organizes and provides data about benefit estimates and saves results tables as .csv files:  
 #' 1) **Estimates_tidy.csv** - Tidy (long) version of the original **Estimates_combined.csv** file  
 #' 2) **Estimates_count_group.csv** - Number of expert estimates for each ecological group  
 #' 3) **Estimates_count_strategy.csv** - Number of expert estimates there are for each strategy x group  
-#' 4) **Estimates_std_wide.csv** - Standardized estimates in same table format as Estimates_combined.csv  
+#' 4) **Estimates_std_wide.csv** - Reformat into a wider tidy version of Estimates_combined.csv  
 #' 5) **Estimates_std_long.csv** - Tidy version of Standardized estimates - for use in plotting  
 #' 
 #'
@@ -38,7 +38,7 @@ rlong <-
 head(rlong)
 
 rlong <- na.omit(rlong)
-# write_csv(rlong, "./results/Estimates_tidy.csv")
+write_csv(rlong, "./results/Estimates_tidy.csv")
 
 rlong$Value <- as.numeric((rlong$Value))
 # str(rlong) # Check data type
@@ -74,47 +74,10 @@ st.table <- table(table.subset2$Ecological.Group, table.subset2$Strategy)
 write.csv(st.table, "./results/Estimates_count_strategy.csv") #neeed this
 st.table
 
-#' ## Standardize to a specified confidence level
-#' Standardize upper and lower estimates to 80% confidence.  
-#' 1) For each estimate, divide confidence by 100  
-#' 2) Take the upper and lower estimates, and standardize using  
-#'     * Lower standardized interval: B−((B−L)×(S∕C))  
-#'     * Upper standardized interval: B+((U−B)×(S∕C))  
-#' 3) Leave Best Guess estimate as is  
-
-#S <- 0.8 # confidence level to standardize estimates to
-
 #' Subset dataframe by estimate type 
 bg <- subset(rlong, Est.Type == "Best.Guess")
 low <- subset(rlong, Est.Type == "Lower")
 up <- subset(rlong, Est.Type == "Upper")
-
-#' Check that order of rows are the same
-# Results should equal the number of rows in tables, if all entries are matching
-# test1 <- sum(str_detect(bg$Ecological.Group,low$Ecological.Group)) 
-# test2 <- sum(str_detect(bg$Ecological.Group,up$Ecological.Group))
-# test3 <- sum(str_detect(bg$Ecological.Group,conf$Ecological.Group))
-# test4 <- sum(bg$Expert == low$Expert) # checks that Experts also align
-
-#' Create copies of the datasets and add new columns with the standardized estimates
-#low.new <- low
-#up.new <- up
-#bg.new <- bg
-#conf.new <- conf
-
-#conf.new$St.Value <- (conf$Value) / 100
-#low.new$St.Value <-
-#  bg$Value - (((bg$Value) - (low$Value)) * (S / (conf.new$St.Value)))
-#up.new$St.Value <-
-#  bg$Value + (((up$Value) - (bg$Value)) * (S / (conf.new$St.Value)))
-#bg.new$St.Value <- bg$Value
-
-#' Combine into new tables and saves standardized estimates into .csv files
-#rlong.std <- rbind(low.new, up.new, bg.new, conf.new) 
-
-# Constrain standardized values to 0 - 100
-#rlong.std$St.Value[rlong.std$St.Value < 0] <- 0 
-#rlong.std$St.Value[rlong.std$St.Value > 100] <- 100
 
 # Create new table in wide format 
 rlong.sub <- rlong[,c(1,2,3,4,5)] 
@@ -131,4 +94,4 @@ rlong.wide <- with(rlong.wide, rlong.wide[order(Expert, Ecological.Group),])
 
 # Output results
 write_csv(rlong.wide, "./results/Estimates_std_wide.csv")
-write_csv(rlong, "./results/Estimates_std_long2.csv") #add line to remove index column from saved file, otherwise need to remove manually
+write_csv(rlong, "./results/Estimates_std_long2.csv") 
